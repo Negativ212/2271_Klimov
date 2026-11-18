@@ -1,0 +1,17 @@
+#include <iostream>
+
+int main() {
+    {
+    double x[10];
+    for (int i = 0; i < 10; i++)
+        std::cout << &x[i] << std::endl;
+    }
+    {
+    double x[10];
+    for (int i = 0; i < 10; i++) {
+        std::cout << reinterpret_cast<uintptr_t>(&x[i]) << std::endl;
+    }
+    }
+        
+    return 0;
+}
