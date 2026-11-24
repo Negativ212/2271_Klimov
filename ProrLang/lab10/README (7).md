@@ -128,18 +128,30 @@ int main() {
 после выполнения каждой инструкции программы. Объясните, что
 происходит в результате выполнения каждой инструкции.*
 ```
-unsigned a = 8, b = 3 ,c = 17;
-unsigned *p = &a;
-unsigned *q = &b;
-*p += *q + c;
-c = *q;
-p = &c;
-c += a;
-*p += 10;
-*q = *p;
-q = p ;
-*q += 10;
+unsigned a = 8, b = 3 ,c = 17; //1
+unsigned *p = &a; //2
+unsigned *q = &b; //3
+*p += *q + c; //4
+c = *q; //5
+p = &c; //6
+c += a; //7
+*p += 10; //8
+*q = *p; //9
+q = p ; //10
+*q += 10; //11
 ```
+1) a=8; b=3; c=17; просто присваивание значений переменным
+2) p создаётся и хранит адрес a. p = &a
+3) q создаётся и хранит адрес b. q = $b
+4) *p это a, *q это b. Выполняется a = a + b + c = 8 + 3 + 17 = 28
+5) в c копируется b на которое указывает q
+6) Теперь p указывает на c, а не на a
+7) с = с + а = 3 + 28 = 31
+8) p указывает на c => c = 31 + 10 = 41
+9) Значение c (*p) записывается в b (*q) b = 41.
+10) q получает адрес из p, теперь оба указателя указывают на c
+11) q указывает на c, значит c = 41 + 10 = 51
+
 
 ### Задание 5 **(1)**
 
@@ -224,6 +236,31 @@ int main() {
 std::cout << reinterpret_cast <double*>(3000) - reinterpret_cast <double*>(2000) << std::endl;
 ```
 
+```cpp
+#include <iostream>
+
+int main() {
+    {
+    std::cout << reinterpret_cast <double*>(3000) - reinterpret_cast <double*>(2000) << " " << sizeof(double) << std::endl;
+    }
+    {
+    std::cout << reinterpret_cast <int*>(3000) - reinterpret_cast <int*>(2000) << " " << sizeof(int) << std::endl;
+    }
+    {
+    std::cout << reinterpret_cast <char*>(3000) - reinterpret_cast <char*>(2000) << " " << sizeof(char) << std::endl;
+    }
+    return 0;
+}
+
+```
+
+![alt text](07/image.png)
+
+(3000-2000)/sizeof(тип)
+
+Чем больше размер типа, тем меньше элементов помещается в один и тот же промежуток.
+
+
 ### Задание 8 **(2)**
 
 *Что надо дописать в записанной ниже программе вместо многоточий, чтобы
@@ -262,6 +299,35 @@ int main() {
 int a[10];
 std::cout << &a[8] - &a[3] << std::endl;
 ```
+```cpp
+#include <iostream>
+
+int main() {
+    {
+        int a[10];
+        std::cout << &a[8] - &a[3] << std::endl;       
+    }
+    {
+        char a[10];
+        std::cout << &a[8] - &a[3] << std::endl;       
+    }
+    {
+        double a[10];
+        std::cout << &a[8] - &a[3] << std::endl;       
+    }
+    return 0;
+}
+```
+
+![alt text](09/image.png)
+
+ответ 1 и тот же т.к. по факту вместе с типом меняется также расстояние между элементами и соответсвенно sizeof
+
+char 5   5/1	 5
+
+int	20	 20 / 4	  5
+
+double	40	40 / 8	5
 
 ### Задание 10 **(1)**
 
@@ -271,6 +337,30 @@ int x [10]={1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 int *p = x + 5;
 int *q = &x[5];
 ```
+```cpp
+#include <iostream>
+
+int main() {
+    int x[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int *p = x + 5;
+    int *q = &x[5];
+
+    std::cout << "p = " << p << std::endl;
+    std::cout << "q = " << q << std::endl;
+    std::cout << "p == q: " << (p == q) << std::endl;   // 1
+    std::cout << "*p = " << *p << std::endl;            // 6
+    std::cout << "*q = " << *q << std::endl;            // 6
+    std::cout << "p - x = " << p - x << std::endl;      // 5
+    std::cout << "q - x = " << q - x << std::endl;      // 5
+
+    return 0;
+}
+```
+
+![alt text](10/image.png)
+
+После инициализации p и q хранят один и тот же адрес: адрес элемента x[5]
+
 
 ### Задание 11 **(3)**
 
@@ -290,6 +380,19 @@ std::cout << s;
 
 *Записанную программу сохраните в папке с номером задания.*
 
+```cpp
+#include <iostream>
+
+int main() {
+    int x[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int s = 0;
+    for (int *p = x; p != x + 10; ++p)
+        s += *p;
+    std::cout << s << std::endl;   
+    return 0;
+}
+```
+![alt text](11/image.png)
 
 ## Дополнительные задания
 
