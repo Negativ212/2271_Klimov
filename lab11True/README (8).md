@@ -1,0 +1,679 @@
+# Языки программирования
+## Лабораторная работа 11
+
+### Задание 1 **(2)**
+
+*Что надо дописать в приведенный пример программы, чтобы она транслировалась без ошибок?
+Существующий код нельзя изменять или переставлять.*
+
+```
+int foo(int x) {
+    return bar(x);
+}
+int bar(int x) {
+    return x+1;
+}
+int main() {
+    foo(0);
+    return 0;
+}
+```
+
+![alt text](01/image.png)
+
+```cpp
+int bar(int x); 
+
+int foo(int x) {
+    return bar(x);
+}
+int bar(int x) {
+    return x+1;
+}
+int main() {
+    foo(0);
+    return 0;
+}
+```
+
+### Задание 2 **(1)** сам
+
+*Функция* **dswap** *должна была обменивать значения своих параметров.* 
+*(На выводе должно было получиться* ```3.4 1.5```.)
+*В чем ошибка при написании этой функции? Как ее исправить? 
+Что передавалось в параметры у исходной функции и у исправленной?* 
+```
+#include <iostream>
+void dswap(double x, double y) {
+   double t = x;
+   x = y;
+   y = t;
+}
+int main(void) {
+   double x = 1.5, y = 3.4;
+   dswap(x, y);
+   std::cout << x << " " << y << std::endl;
+   return 0;
+}
+```
+
+### Задание 3 **(3)**
+
+*Известно, что функция* **dosome** *не изменяет значений вектора* **V**.
+*Какие из способов объявления функции является правильным с точки зрения 
+корректности работы программы? В чем разница между этими способами?*
+
+
+
+```
+void dosome_1(const std::vector<int> &V);
+void dosome_2(std::vector<int> &V);
+void dosome_3(const std::vector<int> V);
+void dosome_4(std::vector<int> V);
+```
+*Напишите примеры для этих функций. В качестве примера можно взять нахождение суммы всех элементов
+вектора.*
+
+*Выведите адрес нулевого элемента вектора в функции. Объясните результат.*
+
+*Проверьте в какие из этих функций можно передать константные вектора. Объясните результат.*
+```
+dosome({1, 2, 3});
+```
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void dosome_1(const std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_2(std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_3(const std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_4(std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+int main(){
+    std::vector<int> V = {1,2,3,4,5};
+    dosome_1(V);
+    dosome_2(V);
+    dosome_3(V);
+    dosome_4(V);
+
+    return 0;
+}
+```
+
+![alt text](03/image.png)
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void dosome_1(const std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_2(std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_3(const std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;    
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_4(std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+int main(){
+    std::vector<int> V = {1,2,3,4,5};
+    dosome_1(V);
+    dosome_2(V);
+    dosome_3(V);
+    dosome_4(V);
+
+    return 0;
+}
+```
+
+![alt text](03/1.png)
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void dosome_1(const std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_2(std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_3(const std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_4(std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+int main(){
+    std::vector<int> V = {1,2,3,4,5};
+    dosome_1(V);
+    dosome_2(V);
+    dosome_3(V);
+    dosome_4(V);
+
+    return 0;
+}
+```
+
+![alt text](03/2.png)
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void dosome_1(const std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_2(std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_3(const std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_4(std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+int main(){
+    std::vector<int> V = {1,2,3,4,5};
+    dosome_1(V);
+    dosome_2(V);
+    std::cout << "V[0] = " << V[0] << std::endl;
+    V = {1,2,3,4,5}; 
+    dosome_3(V);
+    dosome_4(V);
+    std::cout << "V[0] =" << V[0] << std::endl;
+
+    return 0;
+}
+```
+
+![alt text](03/3.png)
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void dosome_1(const std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_2(std::vector<int> &V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_3(const std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    std::cout << "sum = " << s << std::endl;
+}
+
+void dosome_4(std::vector<int> V){
+    int s = 0;
+    for(auto x:V){
+        s+=x;
+    }
+    V[0] = -1;
+    std::cout << "sum = " << s << std::endl;
+}
+
+int main(){
+    std::vector<int> V = {1,2,3,4,5};
+    dosome_1(V);
+    dosome_2(V);
+    dosome_3(V);
+    dosome_4(V);
+
+    dosome_1({1, 2, 3});
+    dosome_2({1, 2, 3});
+    dosome_3({1, 2, 3});
+    dosome_4({1, 2, 3});
+
+    return 0;
+}
+```
+
+![alt text](03/4.png)
+
+Самый правильный вариант это первый. Он передаётся по ссылке и он сохранён от изменений
+
+### Задание 4 **(2)**
+
+*Напишите программу в которой будет создаваться восемь массивов из 128 целых чисел четырьмя способами,
+каждым способом по два массива.
+Первые два массива должны быть глобальными, вторые — локальными статическими, третьи — локальными на стеке,
+четвертые — локальными в куче. Выведите адреса первого и последнего элемента в каждом массиве.
+Сравните, насколько далеко они располагаются друг от друга. Какие выводы можно из этого сделать.*
+
+*В отчет запишите программу и скриншот ее работы.*
+
+```cpp
+#include <iostream>
+
+int G1[128] = {0}, G2[128] = {0};
+
+void foo(){
+    static int s1[128] = {0}, s2[128] = {0};
+    int L1[128] = {0}, L2[128] = {0};
+    int *H1 = new int[128];
+    int *H2 = new int[128];
+    std::cout << "Global   " << &G1[0] << ' ' << &G1[127] << ' ' << &G2[0] << ' ' << &G2[127] << std::endl;
+    std::cout << "Static   " << &s1[0] << ' ' << &s1[127] << ' ' << &s2[0] << ' ' << &s2[127] << std::endl;
+    std::cout << "Local   " << &L1[0] << ' ' << &L1[127] << ' ' << &L2[0] << ' ' << &L2[127] << std::endl;
+    std::cout << "Heap   " << &H1[0] << ' ' << &H1[127] << ' ' << &H2[0] << ' ' << &H2[127] << std::endl;
+}
+
+int main(){
+    foo();
+    return 0;
+}
+```
+
+![alt text](04/image.png)
+
+Глобальные и статические хранятся в статической памяти, локальные в стеке, а кучи в куче.
+
+```cpp
+#include <iostream>
+
+int G1[128] = {0}, G2[128] = {0};
+
+void foo(){
+    static int s1[128] = {0}, s2[128] = {0};
+    int L1[128] = {0}, L2[128] = {0};
+    int *H1 = new int[128];
+    int *H2 = new int[128];
+    std::cout << "Global   " << &G1[0] << ' ' << &G1[127] << ' ' << &G2[0] << ' ' << &G2[127] << std::endl;
+    std::cout << "Static   " << &s1[0] << ' ' << &s1[127] << ' ' << &s2[0] << ' ' << &s2[127] << std::endl;
+    std::cout << "Local   " << &L1[0] << ' ' << &L1[127] << ' ' << &L2[0] << ' ' << &L2[127] << std::endl;
+    std::cout << "Heap   " << &H1[0] << ' ' << &H1[127] << ' ' << &H2[0] << ' ' << &H2[127] << std::endl;
+    G1[0]++;
+    s1[0]++;
+    H1[0]++;
+    L1[0]++;
+    std::cout << G1[0] << ' ' << s1[0] << ' ' << H1[0] << ' ' << L1[0] << std::endl;
+}
+
+int main(){
+    foo();
+    foo();
+    foo();
+    return 0;
+}
+```
+
+![alt text](04/1.png)
+
+```cpp
+#include <iostream>
+
+int G1[128] = {0}, G2[128] = {0};
+
+void foo(){
+    static int s1[128] = {0}, s2[128] = {0};
+    int L1[128] = {0}, L2[128] = {0};
+    int *H1 = new int[128];
+    int *H2 = new int[128];
+    std::cout << "Global   " << &G1[0] << ' ' << &G1[127] << ' ' << &G2[0] << ' ' << &G2[127] << std::endl;
+    std::cout << "Static   " << &s1[0] << ' ' << &s1[127] << ' ' << &s2[0] << ' ' << &s2[127] << std::endl;
+    std::cout << "Local   " << &L1[0] << ' ' << &L1[127] << ' ' << &L2[0] << ' ' << &L2[127] << std::endl;
+    std::cout << "Heap   " << &H1[0] << ' ' << &H1[127] << ' ' << &H2[0] << ' ' << &H2[127] << std::endl;
+    G1[0]++;
+    s1[0]++;
+    H1[0]++;
+    L1[0]++;
+    std::cout << G1[0] << ' ' << s1[0] << ' ' << H1[0] << ' ' << L1[0] << std::endl;
+}
+
+void bar(){
+    foo();
+}
+
+int main(){
+    foo();
+    bar();
+    bar();
+    return 0;
+}
+```
+
+![alt text](04/2.png)
+
+Глобальные и статические создаются один раз вначале программы, динамические массивы в куче, а локальные в стеке.
+
+```cpp
+#include <iostream>
+
+int G1[128] = {0}, G2[128] = {0};
+
+void foo(){
+    static int s1[128] = {0}, s2[128] = {0};
+    int L1[128] = {0}, L2[128] = {0};
+    int *H1 = new int[128];
+    int *H2 = new int[128];
+    std::cout << "Global   " << &G1[0] << ' ' << &G1[127] << ' ' << &G2[0] << ' ' << &G2[127] << std::endl;
+    std::cout << "Static   " << &s1[0] << ' ' << &s1[127] << ' ' << &s2[0] << ' ' << &s2[127] << std::endl;
+    std::cout << "Local   " << &L1[0] << ' ' << &L1[127] << ' ' << &L2[0] << ' ' << &L2[127] << std::endl;
+    std::cout << "Heap   " << &H1[0] << ' ' << &H1[127] << ' ' << &H2[0] << ' ' << &H2[127] << std::endl;
+    G1[0]++;
+    s1[0]++;
+    H1[0]++;
+    L1[0]++;
+    std::cout << G1[0] << ' ' << s1[0] << ' ' << H1[0] << ' ' << L1[0] << std::endl;
+    delete[] H1;
+    delete[] H2;
+}
+
+void bar(){
+    foo();
+}
+
+int main(){
+    foo();
+    bar();
+    bar();
+    return 0;
+}
+```
+
+
+
+```cpp
+#include <iostream>
+
+int G1[128] = {0}, G2[128] = {0};
+int *H1, *H2;
+
+void foo(){
+    static int s1[128] = {0}, s2[128] = {0};
+    int L1[128] = {0}, L2[128] = {0};
+    H1 = new int[128];
+    H2 = new int[128];
+    std::cout << "Global   " << &G1[0] << ' ' << &G1[127] << ' ' << &G2[0] << ' ' << &G2[127] << std::endl;
+    std::cout << "Static   " << &s1[0] << ' ' << &s1[127] << ' ' << &s2[0] << ' ' << &s2[127] << std::endl;
+    std::cout << "Local   " << &L1[0] << ' ' << &L1[127] << ' ' << &L2[0] << ' ' << &L2[127] << std::endl;
+    std::cout << "Heap   " << &H1[0] << ' ' << &H1[127] << ' ' << &H2[0] << ' ' << &H2[127] << std::endl;
+    G1[0]++;
+    s1[0]++;
+    H1[0]++;
+    L1[0]++;
+    std::cout << G1[0] << ' ' << s1[0] << ' ' << H1[0] << ' ' << L1[0] << std::endl;
+}
+
+void bar(){
+    foo();
+}
+
+int main(){
+    foo();
+    bar();
+    foo();
+    std::cout << H1[0];
+    delete[] H1;
+    delete[] H2;
+    return 0;
+}
+```
+
+
+### Задание 5 **(2)**
+
+*Приведенная ниже программа вызывает ошибку. Почему?*
+
+*Что будет, если перенести объявление массива выше функции* **foo**?
+
+*Что будет, если объявить массив с использованием ключевого слова* **static**?
+
+*Что будет, если создать массив такого же размера с использованием* **new**?
+```
+#include <iostream>
+int foo() {
+    int x[100010001];
+    return x[100010000];
+}
+int main() {
+    std::cout << foo();
+    return 0;
+}
+```
+
+### Задание 6 **(3)**
+
+*Запишите следующую программу. Выполните ее трансляцию с нулевым оровнем оптимизации.
+Нарисуйте схематично расположение переменных в памяти в момент вызова при \verb*|a=0|. 
+Отметьте кадры стека.*
+
+```
+#include <iostream>
+long long foo(long long a, long long b) {
+   if (a == 0) 
+      return 0;
+   else {
+      long long x, y;
+      std::cout << "Enter a=" << a << ", b=" << b << std::endl;
+      std::cout << "Ptrs " << &a << ' ' << &b <<' '<< &x<<' '<<&y << std::endl;
+      x = a * b;
+      y = foo(a - 1, b + 1);
+      return x + y;
+   }
+}
+int main() {
+   foo(5, 5);
+   return 0;
+}
+```
+
+### Задание 7 **(3)**
+
+*Рассмотрите следующую программу. Выполните ее трансляцию, используя  компилятор g++ без
+оптимизации (уровень оптимизации 0). Объясните ее работу.*
+```
+#include <iostream>
+double &choose(double &a, bool flg) {
+    double pi = 3.14;
+    double &r = flg ? pi : a;
+    return r;
+}
+
+int main(void)
+{
+    double a = 2.7;
+    double &pi = choose(a, true);
+    std::cout << pi << std::endl;
+    double &e = choose(a, false);
+    std::cout << e << std::endl;
+    std::cout << pi << std::endl;
+    return 0;
+}
+```
+
+### Задание 8 **(3)**
+
+*Объясните работу приведенной ниже программы.
+Какие ошибки в ней имеются? (Виды ошибок смотрите в лекции.)*
+```
+#include <iostream>
+int main() {
+    int *p = new int [10];
+    int *q = new int [10];
+    for (int i = 0; i <= 10; i++)
+        p[i] = i;
+    q = p;
+    delete[] p;
+    for (int i = 0; i <= 10; i++)
+        std::cout << q[i] <<" ";
+    delete[] q;
+    return 0;
+}
+```
+
+
+## Дополнительные задания
+
+### Задание 1 **(2)**
+
+*В чем ошибка данного примера? Будет ли он работать при замене типа* **double** на **int**
+*в функции bar?*
+```
+#include <iostream>
+int foo(int x) {return x+1;}
+double bar(double x) {return x-1;}
+int main () {
+    decltype(foo) *pf;
+    pf = bar;
+    std::cout << pf(0);
+    return 0;
+}
+
+```
+
+### Задание 2 **(10)**
+
+*С использованием стандартных функций сортировки напишите на Java, C++ и Python программу
+для сортировки вещественных чисел по возрастанию целой части числа и убыванию дробной.
+Например, правильный порядок чисел после сортировки будет выглядеть так:*
+```1.9; 1.32; 1.0; 5.8; 5.1; 12.6; 13.2; 13.1.``` 
+
+*При реализации требуется использовать лямбда-функции.*
+
+### Задание 3 **(4)**
+*Напишите фрагмент программы вместо многоточия, 
+в котором в начало массива* **data** *будет вставляться новый элемент* **t**. *Существующие
+элементы при этом должны сместиться назад. Другие исправления вносить нельзя.
+Для этого потребуется выделить новый участок памяти и перенести в него все элементы.*
+```
+#include <iostream>
+int main() {
+    int n;
+    std::cin >> n;
+    *data = new int [n];
+    for (int i=0; i<n; i++)
+        std::cin >> data[i];
+     int t;
+     std::cin >> t;
+     ...
+     for (int i=0;i<n+1;i++)
+         std::cout << data[i] <<' '; 
+     return 0;
+}
+```
+
+### Задание 4 **(4)**
+*Напишите программу, которая создаст в памяти треугольник Паскаля размера* **n**.
+*Размер должен вводиться во время работы программы. 
+В программе не должна выделяться память для несуществующих элементов. В программе требуется использовать 
+массив указателей.* 
+
